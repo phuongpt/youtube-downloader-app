@@ -42,10 +42,35 @@ router.post('/video', function(req, res, next) {
             res.render('listvideo', {error: 'The link you provided either not a valid url or it is not acceptable'});
         }
     });
-
-
-
 })
+
+router.get('/parse', function (req, res) {
+    var url = req.query.url,
+        formats = [],
+        pattern = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/;
+console.log(url);
+    request.get(url, function (err, resp, body) {
+        // check if it is valid url
+        if(pattern.test(resp.request.uri.href)) {
+            ytdl.getInfo(url, ['--youtube-skip-dash-manifest'], function(err, info) {
+                if(err) return res.render('listvideo', {error: 'The link you provided either not a valid url or it is not acceptable'});
+
+                // push all video formats for download (skipping audio)
+                info.formats.forEach(function(item) {
+                    if(item.format_note !== 'DASH audio' && item.filesize) {
+                        item.filesize = item.filesize ? bytesToSize(item.filesize): 'unknown';
+                        formats.push(item);
+                    }
+                });
+                res.send({id: info.id, formats: formats});
+            })
+        }
+        else {
+            res.send({error: 'The link you provided either not a valid url or it is not acceptable'});
+        }
+    });
+})
+
 
 
 module.exports = router;
