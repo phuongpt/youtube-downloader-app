@@ -71,7 +71,7 @@ router.post("/parse", async function (req, res) {
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
   res.header(
     "Access-Control-Allow-Headers",
-    "Content-Type, Authorization, Content-Length, X-Requested-With"
+    "Content-Type, Authorization, Content-Length, X-Requested-With, Accept"
   );
 
   var url = req.body.url,
@@ -110,7 +110,7 @@ router.post("/translate", async function (req, res) {
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
   res.header(
     "Access-Control-Allow-Headers",
-    "Content-Type, Authorization, Content-Length, X-Requested-With"
+    "Content-Type, Authorization, Content-Length, X-Requested-With, Accept"
   );
 
   const text = req.body.text;
@@ -134,7 +134,7 @@ router.get("/test", async function (req, res) {
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
   res.header(
     "Access-Control-Allow-Headers",
-    "Content-Type, Authorization, Content-Length, X-Requested-With"
+    "Content-Type, Authorization, Content-Length, X-Requested-With, Accept"
   );
 
   const text = req.query.text;
@@ -145,7 +145,7 @@ router.post("/test", async function (req, res) {
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
   res.header(
     "Access-Control-Allow-Headers",
-    "Content-Type, Authorization, Content-Length, X-Requested-With"
+    "Content-Type, Authorization, Content-Length, X-Requested-With, Accept"
   );
 
   res.send({
