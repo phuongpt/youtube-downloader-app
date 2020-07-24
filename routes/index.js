@@ -119,4 +119,9 @@ router.post("/translate", async function (req, res) {
   res.send(parsedData);
 });
 
+router.get("/test", async function (req, res) {
+  const text = req.query.text;
+  res.send(text);
+});
+
 module.exports = router;
