@@ -132,11 +132,11 @@ router.post("/translate", async function (req, res) {
 
 router.get("/test", cors(), async function (req, res) {
   const text = req.query.text;
-  res.json({ text });
+  res.send({ text });
 });
 
 router.post("/test", cors(), async function (req, res) {
-  res.json({
+  res.send({
     query: req.query,
     params: req.params,
     body: req.body,
