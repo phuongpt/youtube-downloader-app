@@ -10,7 +10,7 @@ import translate, { parseMultiple } from "google-translate-open-api";
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
-  res.render("index", { title: "Youtube Downloader Web App" });
+  res.render("index", { title: "Youtube Talkdy" });
 });
 
 // convert to human readable format
