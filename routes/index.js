@@ -8,6 +8,7 @@ const _ = require("underscore");
 const { getSubtitles } = require("youtube-captions-scraper");
 const getYouTubeID = require("get-youtube-id");
 import translate, { parseMultiple } from "google-translate-open-api";
+import { toVttTime } from "subtitle";
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -83,10 +84,14 @@ router.post("/parse", cors(), async function (req, res) {
 
     //get subtitle
     const subtitle = await getYouTubeSubtitles(url, lang);
-
+    const newSubtitle = (subtitle || []).map(({ start, dur, text }) => ({
+      start: toVttTime(start * 1000),
+      end: toVttTime(start * 1000 + dur * 1000),
+      text,
+    }));
     res.send({
       url: file.url,
-      subtitle,
+      subtitle: newSubtitle,
       videoDetails,
       lengthSeconds,
       // info,
@@ -119,5 +124,7 @@ router.post("/translate", cors(), async function (req, res) {
 
   res.send({ text: parsedData });
 });
+
+router.post;
 
 module.exports = router;
