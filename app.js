@@ -9,6 +9,7 @@ var routes = require("./routes/index");
 var users = require("./routes/users");
 
 var app = express();
+var cors = require("cors");
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -23,8 +24,19 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
-app.options("*", cors());
 
+// app.use((req, res, next) => {
+//   res.header("Access-Control-Allow-Orign", "*");
+//   res.header(
+//     "Access-Control-Allow-Methods",
+//     "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+//   );
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept"
+//   );
+//   next();
+// });
 app.use("/", routes);
 app.use("/users", users);
 
