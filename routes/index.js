@@ -75,10 +75,9 @@ router.post("/parse", async function (req, res) {
   );
 
   var url = req.body.url,
-    lang = req.body.lang || "en",
-    pattern = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/;
+    lang = req.body.lang || "en";
 
-  if (pattern.test(url)) {
+  try {
     const info = await ytdlCore.getInfo(url);
 
     //get video url
@@ -101,11 +100,8 @@ router.post("/parse", async function (req, res) {
       videoId,
       // info,
     });
-  } else {
-    res.send({
-      error:
-        "The link you provided either not a valid url or it is not acceptable",
-    });
+  } catch (error) {
+    res.send({ error });
   }
 });
 
