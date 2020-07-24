@@ -67,7 +67,7 @@ const getYouTubeSubtitles = async (youtubeUrl, lang) => {
   }
 };
 
-router.post("/parse", async function (req, res) {
+router.post("/parse", cors(), async function (req, res) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
   res.header(
@@ -106,7 +106,7 @@ router.post("/parse", async function (req, res) {
   }
 });
 
-router.post("/translate", async function (req, res) {
+router.post("/translate", cors(), async function (req, res) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
   res.header(
@@ -128,20 +128,6 @@ router.post("/translate", async function (req, res) {
     : translated;
 
   res.send(parsedData);
-});
-
-router.get("/test", cors(), async function (req, res) {
-  const text = req.query.text;
-  res.send({ text });
-});
-
-router.post("/test", cors(), async function (req, res) {
-  res.send({
-    query: req.query,
-    params: req.params,
-    body: req.body,
-    ok: "yes",
-  });
 });
 
 module.exports = router;
