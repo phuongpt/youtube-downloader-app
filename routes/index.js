@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const router = express.Router();
 const ytdl = require("youtube-dl");
 const ytdlCore = require("ytdl-core");
@@ -129,13 +130,13 @@ router.post("/translate", async function (req, res) {
   res.send(parsedData);
 });
 
-router.get("/test", async function (req, res) {
+router.get("/test", cors(), async function (req, res) {
   const text = req.query.text;
-  res.send({ text });
+  res.json({ text });
 });
 
-router.post("/test", async function (req, res) {
-  res.send({
+router.post("/test", cors(), async function (req, res) {
+  res.json({
     query: req.query,
     params: req.params,
     body: req.body,
