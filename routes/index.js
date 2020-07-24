@@ -68,13 +68,6 @@ const getYouTubeSubtitles = async (youtubeUrl, lang) => {
 };
 
 router.post("/parse", cors(), async function (req, res) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Content-Type, Authorization, Content-Length, X-Requested-With"
-  );
-
   var url = req.body.url,
     lang = req.body.lang || "en";
 
