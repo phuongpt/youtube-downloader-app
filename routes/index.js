@@ -67,6 +67,13 @@ const getYouTubeSubtitles = async (youtubeUrl, lang) => {
 };
 
 router.post("/parse", async function (req, res) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization, Content-Length, X-Requested-With"
+  );
+
   var url = req.body.url,
     lang = req.body.lang || "en",
     pattern = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/;
@@ -103,6 +110,13 @@ router.post("/parse", async function (req, res) {
 });
 
 router.post("/translate", async function (req, res) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization, Content-Length, X-Requested-With"
+  );
+
   const text = req.body.text;
   const to = req.body.to || "vi";
   const resp = await translate(text, {
@@ -120,6 +134,13 @@ router.post("/translate", async function (req, res) {
 });
 
 router.get("/test", async function (req, res) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization, Content-Length, X-Requested-With"
+  );
+
   const text = req.query.text;
   res.send(text);
 });
