@@ -151,7 +151,7 @@ router.post("/test", async function (req, res) {
   res.send({
     query: req.query,
     params: req.params,
-    query: req.query,
+    body: req.body,
     ok: "yes",
   });
 });
