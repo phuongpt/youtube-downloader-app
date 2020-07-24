@@ -148,7 +148,7 @@ router.post("/test", async function (req, res) {
     "Content-Type, Authorization, Content-Length, X-Requested-With"
   );
 
-  res.send({ text: req.body.text });
+  res.send({ query: req.query, params: req.params, query: req.query });
 });
 
 module.exports = router;
