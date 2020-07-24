@@ -58,4 +58,5 @@ app.use(function (err, req, res, next) {
   });
 });
 
+app.options("*", cors());
 module.exports = app;
