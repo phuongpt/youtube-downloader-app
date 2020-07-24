@@ -76,19 +76,17 @@ router.post("/parse", cors(), async function (req, res) {
 
     //get video url
     const formats = ytdlCore.filterFormats(info.formats, "video");
-    const file = formats.find(
-      ({ container, quality }) => container === "mp4" && quality === "medium"
-    );
+    const file = formats.find(({ container, quality }) => container === "mp4");
 
     //info
     const { videoDetails, lengthSeconds } = info;
 
     //get subtitle
-    // const subtitle = await getYouTubeSubtitles(url, lang);
+    const subtitle = await getYouTubeSubtitles(url, lang);
 
     res.send({
       url: file.url,
-      // subtitle,
+      subtitle,
       videoDetails,
       lengthSeconds,
       // info,
