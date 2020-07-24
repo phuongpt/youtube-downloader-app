@@ -88,17 +88,16 @@ router.post("/parse", cors(), async function (req, res) {
     );
 
     //info
-    const { videoDetails, lengthSeconds, videoId } = info;
+    const { videoDetails, lengthSeconds } = info;
 
     //get subtitle
-    const subtitle = await getYouTubeSubtitles(url, lang);
+    // const subtitle = await getYouTubeSubtitles(url, lang);
 
     res.send({
       url: file.url,
-      subtitle,
+      // subtitle,
       videoDetails,
       lengthSeconds,
-      videoId,
       // info,
     });
   } catch (error) {
@@ -127,7 +126,7 @@ router.post("/translate", cors(), async function (req, res) {
     ? parseMultiple(translated).join(".")
     : translated;
 
-  res.send(parsedData);
+  res.send({ text: parsedData });
 });
 
 module.exports = router;
