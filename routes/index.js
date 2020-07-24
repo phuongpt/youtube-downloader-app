@@ -66,7 +66,7 @@ const getYouTubeSubtitles = async (youtubeUrl, lang) => {
   }
 };
 
-router.get("/parse", async function (req, res) {
+router.post("/parse", async function (req, res) {
   var url = req.body.url,
     lang = req.body.lang || "en",
     pattern = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/;
