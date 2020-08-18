@@ -2,7 +2,8 @@
   "name": "youtube-downloader-app",
   "version": "0.1.0",
   "scripts": {
-    "start": "node -r esm ./bin/www"
+    "start": "node -r esm ./bin/www",
+    "log": "heroku logs -t --app talkdy-youtube"
   },
   "dependencies": {
     "body-parser": "~1.15.1",

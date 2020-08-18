@@ -64,7 +64,7 @@ const getYouTubeSubtitles = async (youtubeUrl, lang) => {
     const subtitles = await getSubtitles({ videoID, lang });
     return subtitles;
   } catch (error) {
-    console.err({ error });
+    console.log({ error });
     return [];
   }
 };
@@ -102,8 +102,7 @@ router.post("/parse", cors(), async function (req, res) {
     const info = await parseVideo(url, lang);
     res.send(info);
   } catch (error) {
-    console.err({ error });
-    res.send({ error });
+    res.send({ error: error.message });
   }
 });
 
@@ -115,8 +114,7 @@ router.get("/parse", cors(), async function (req, res) {
     const info = await parseVideo(url, lang);
     res.send(info);
   } catch (error) {
-    console.err({ error });
-    res.send({ error });
+    res.send({ error: error.message });
   }
 });
 
@@ -137,7 +135,7 @@ router.post("/translate", cors(), async function (req, res) {
 
     res.send({ text: parsedData });
   } catch (error) {
-    console.err({ error });
+    res.send({ error: error.message });
   }
 });
 
