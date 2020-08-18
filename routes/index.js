@@ -68,34 +68,38 @@ const getYouTubeSubtitles = async (youtubeUrl, lang) => {
   }
 };
 
+const parseVideo = async (url, lang) => {
+  const info = await ytdlCore.getInfo(url);
+
+  //get video url
+  const formats = ytdlCore.filterFormats(info.formats, "video");
+  const file = formats.find(({ container, quality }) => container === "mp4");
+
+  //info
+  const { videoDetails, lengthSeconds } = info;
+
+  //get subtitle
+  const subtitle = await getYouTubeSubtitles(url, lang);
+  const newSubtitle = (subtitle || []).map(({ start, dur, text }) => ({
+    start: toVttTime(start * 1000),
+    end: toVttTime(start * 1000 + dur * 1000),
+    text,
+  }));
+  return {
+    url: file.url,
+    subtitle: newSubtitle,
+    videoDetails,
+    lengthSeconds,
+  };
+};
+
 router.post("/parse", cors(), async function (req, res) {
   var url = req.body.url,
     lang = req.body.lang || "en";
 
   try {
-    const info = await ytdlCore.getInfo(url);
-
-    //get video url
-    const formats = ytdlCore.filterFormats(info.formats, "video");
-    const file = formats.find(({ container, quality }) => container === "mp4");
-
-    //info
-    const { videoDetails, lengthSeconds } = info;
-
-    //get subtitle
-    // const subtitle = await getYouTubeSubtitles(url, lang);
-    // const newSubtitle = (subtitle || []).map(({ start, dur, text }) => ({
-    //   start: toVttTime(start * 1000),
-    //   end: toVttTime(start * 1000 + dur * 1000),
-    //   text,
-    // }));
-    res.send({
-      url: file.url,
-      //subtitle: newSubtitle,
-      videoDetails,
-      lengthSeconds,
-      // info,
-    });
+    const info = await parseVideo(url, lang);
+    res.send(info);
   } catch (error) {
     res.send({ error });
   }
@@ -106,30 +110,11 @@ router.get("/parse", cors(), async function (req, res) {
     lang = req.query.lang || "en";
 
   try {
-    const info = await ytdlCore.getInfo(url);
-
-    //get video url
-    const formats = ytdlCore.filterFormats(info.formats, "video");
-    const file = formats.find(({ container, quality }) => container === "mp4");
-
-    //info
-    const { videoDetails, lengthSeconds } = info;
-
-    //get subtitle
-    const subtitle = await getYouTubeSubtitles(url, lang);
-    const newSubtitle = (subtitle || []).map(({ start, dur, text }) => ({
-      start: toVttTime(start * 1000),
-      end: toVttTime(start * 1000 + dur * 1000),
-      text,
-    }));
-    res.send({
-      url: file.url,
-      subtitle: newSubtitle,
-      videoDetails,
-      lengthSeconds,
-      // info,
-    });
+    const info = await parseVideo(url, lang);
+    res.send(info);
   } catch (error) {
+    console.log({ error });
+
     res.send({ error });
   }
 });
