@@ -64,7 +64,8 @@ const getYouTubeSubtitles = async (youtubeUrl, lang) => {
     const subtitles = await getSubtitles({ videoID, lang });
     return subtitles;
   } catch (error) {
-    console.log(`Error getting captions: ${error.message}`);
+    console.err({ error });
+    return [];
   }
 };
 
@@ -101,6 +102,7 @@ router.post("/parse", cors(), async function (req, res) {
     const info = await parseVideo(url, lang);
     res.send(info);
   } catch (error) {
+    console.err({ error });
     res.send({ error });
   }
 });
@@ -113,34 +115,30 @@ router.get("/parse", cors(), async function (req, res) {
     const info = await parseVideo(url, lang);
     res.send(info);
   } catch (error) {
-    console.log({ error });
-
+    console.err({ error });
     res.send({ error });
   }
 });
 
 router.post("/translate", cors(), async function (req, res) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Content-Type, Authorization, Content-Length, X-Requested-With"
-  );
+  try {
+    const text = req.body.text;
+    const to = req.body.to || "vi";
+    const resp = await translate(text, {
+      tld: "com",
+      to,
+    });
 
-  const text = req.body.text;
-  const to = req.body.to || "vi";
-  const resp = await translate(text, {
-    tld: "com",
-    to,
-  });
+    const translated = resp.data[0];
 
-  const translated = resp.data[0];
+    const parsedData = _.isArray(translated)
+      ? parseMultiple(translated).join(".")
+      : translated;
 
-  const parsedData = _.isArray(translated)
-    ? parseMultiple(translated).join(".")
-    : translated;
-
-  res.send({ text: parsedData });
+    res.send({ text: parsedData });
+  } catch (error) {
+    console.err({ error });
+  }
 });
 
 router.post;
