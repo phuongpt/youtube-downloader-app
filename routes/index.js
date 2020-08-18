@@ -83,6 +83,39 @@ router.post("/parse", cors(), async function (req, res) {
     const { videoDetails, lengthSeconds } = info;
 
     //get subtitle
+    // const subtitle = await getYouTubeSubtitles(url, lang);
+    // const newSubtitle = (subtitle || []).map(({ start, dur, text }) => ({
+    //   start: toVttTime(start * 1000),
+    //   end: toVttTime(start * 1000 + dur * 1000),
+    //   text,
+    // }));
+    res.send({
+      url: file.url,
+      //subtitle: newSubtitle,
+      videoDetails,
+      lengthSeconds,
+      // info,
+    });
+  } catch (error) {
+    res.send({ error });
+  }
+});
+
+router.get("/parse", cors(), async function (req, res) {
+  var url = req.query.url,
+    lang = req.query.lang || "en";
+
+  try {
+    const info = await ytdlCore.getInfo(url);
+
+    //get video url
+    const formats = ytdlCore.filterFormats(info.formats, "video");
+    const file = formats.find(({ container, quality }) => container === "mp4");
+
+    //info
+    const { videoDetails, lengthSeconds } = info;
+
+    //get subtitle
     const subtitle = await getYouTubeSubtitles(url, lang);
     const newSubtitle = (subtitle || []).map(({ start, dur, text }) => ({
       start: toVttTime(start * 1000),
