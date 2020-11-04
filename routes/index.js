@@ -87,7 +87,7 @@ const parseVideo = async (url, lang) => {
     text,
   }));
   return {
-    url: files[0].url,
+    url: files.length > 0 ? files[0].url : "",
     urls: files.map(file=>file.url),
     subtitle: newSubtitle,
     videoDetails,
