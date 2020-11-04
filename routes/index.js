@@ -74,7 +74,7 @@ const parseVideo = async (url, lang) => {
 
   //get video url
   const formats = ytdlCore.filterFormats(info.formats, "video");
-  const file = formats.find(({ container, quality, hasAudio }) =>  container === 'mp4' && quality === 'medium' && hasAudio === true);
+  const files = formats.filter(({ container, quality, hasAudio }) =>  container === 'mp4' && hasAudio === true);
 
   //info
   const { videoDetails, lengthSeconds } = info;
@@ -87,7 +87,8 @@ const parseVideo = async (url, lang) => {
     text,
   }));
   return {
-    url: file && file.url,
+    url: files[0].url,
+    urls: files.map(file=>file.url),
     subtitle: newSubtitle,
     videoDetails,
     lengthSeconds,
